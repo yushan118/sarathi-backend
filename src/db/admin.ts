@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
-export interface IUser {
-  _id: Schema.Types.ObjectId,
+export interface IAdminUser {
+  _id: Schema.Types.ObjectId;
   name: string;
-  mobile_number: string;
+  email: string;
 }
 
-interface IUserAuthentication {
+interface IAdminUserAuthentication {
   authentication: {
     password: string;
     salt: string;
@@ -14,9 +14,11 @@ interface IUserAuthentication {
   };
 }
 
-const UserSchema = new mongoose.Schema<IUser & IUserAuthentication>({
+const AdminUserSchema = new mongoose.Schema<
+  IAdminUser & IAdminUserAuthentication
+>({
   name: { type: String, required: true },
-  mobile_number: { type: String, required: true },
+  email: { type: String, required: true },
   authentication: {
     password: { type: String, required: true, select: false },
     salt: { type: String, select: false },
@@ -24,4 +26,4 @@ const UserSchema = new mongoose.Schema<IUser & IUserAuthentication>({
   },
 });
 
-export const UserModel = mongoose.model("User", UserSchema);
+export const AdminUserModel = mongoose.model("AdminUser", AdminUserSchema);
