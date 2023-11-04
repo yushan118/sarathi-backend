@@ -46,3 +46,18 @@ export async function getAllBookings(
     res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+export async function getBookingInfo(
+  req: AuthenticatedAdminRequest,
+  res: express.Response
+) {
+  try {
+    const { id } = req.params;
+
+    const booking = await BookingModel.findById(id);
+    return res.status(200).json(booking).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
