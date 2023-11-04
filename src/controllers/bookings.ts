@@ -10,8 +10,8 @@ export async function addBooking(
   res: express.Response
 ) {
   try {
-    const { contact_number, location } = req.body;
-    if (!contact_number || !location) {
+    const { contact_number, lat, lng } = req.body;
+    if (!contact_number || !lat || !lng) {
       return res
         .status(400)
         .json({ message: "contact_number and location are required fields" })
@@ -20,7 +20,8 @@ export async function addBooking(
 
     const booking = await new BookingModel({
       contact_number,
-      location,
+      lat,
+      lng,
       user: req.user._id,
     })
       .save()
