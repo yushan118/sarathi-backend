@@ -54,7 +54,7 @@ export async function getBookingInfo(
   try {
     const { id } = req.params;
 
-    const booking = await BookingModel.findById(id);
+    const booking = await BookingModel.findById(id).populate("user");
     return res.status(200).json(booking).end();
   } catch (error) {
     console.log(error);
