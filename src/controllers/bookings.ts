@@ -61,3 +61,22 @@ export async function getBookingInfo(
     res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+export async function setStatus(
+  req: AuthenticatedAdminRequest,
+  res: express.Response
+) {
+  try {
+    const { id, status } = req.body;
+    await BookingModel.findOneAndUpdate(
+      { _id: id },
+      {
+        status,
+      }
+    );
+    return res.status(200).json({ success: true }).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
