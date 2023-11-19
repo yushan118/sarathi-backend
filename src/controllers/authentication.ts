@@ -2,6 +2,7 @@ import { authentication, randomSalt } from "../shared";
 import { UserModel } from "../db/users";
 import express from "express";
 import { AdminUserModel } from "../db/admin";
+import { AmbulanceUserModel } from "../db/ambulance-user";
 
 export async function login(req: express.Request, res: express.Response) {
   try {
@@ -171,6 +172,103 @@ export async function registerAdmin(
       .then((user) => user.toObject());
 
     return res.status(200).json(adminUser).end();
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Something went wrong" }).end();
+  }
+}
+
+export async function loginAmbulance(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const { mobile_number, password } = req.body;
+
+    if (!mobile_number || !password) {
+      return res
+        .status(400)
+        .json({ message: "mobile_number and password are required fields" })
+        .end();
+    }
+
+    const ambulanceUser = await AmbulanceUserModel.findOne({
+      mobile_number,
+    }).select("+authentication.salt +authentication.password");
+    if (!ambulanceUser) {
+      return res
+        .status(400)
+        .json({ message: "Invalid mobile number or password" });
+    }
+
+    const expectedHash = authentication(
+      ambulanceUser.authentication.salt,
+      password
+    );
+    if (ambulanceUser.authentication.password != expectedHash) {
+      return res
+        .status(403)
+        .json({ message: "Invalid mobile number or password" });
+    }
+
+    const salt = randomSalt();
+    ambulanceUser.authentication.sessionToken = authentication(
+      salt,
+      ambulanceUser._id.toString()
+    );
+    await ambulanceUser.save();
+
+    return res.status(200).json({
+      user: ambulanceUser,
+      type: "ambulance",
+      access_token: ambulanceUser.authentication.sessionToken,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: "Something went wrong" }).end();
+  }
+}
+
+export async function registerAmbulance(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const { mobile_number, password, name } = req.body;
+    if (!mobile_number || !password || !name) {
+      return res
+        .status(400)
+        .json({
+          message: "mobile_number, password and name are required fields",
+        })
+        .end();
+    }
+
+    const existingAmbulanceUser = await AmbulanceUserModel.findOne({
+      mobile_number,
+    });
+    if (existingAmbulanceUser) {
+      return res
+        .status(400)
+        .json({
+          message: "User already exists",
+        })
+        .end();
+    }
+
+    const salt = randomSalt();
+    const ambulanceUser = await new AmbulanceUserModel({
+      mobile_number,
+      name,
+      authentication: {
+        salt,
+        password: authentication(salt, password),
+      },
+    })
+      .save()
+      .then((user) => user.toObject());
+
+    return res.status(200).json(ambulanceUser).end();
   } catch (error) {
     console.log(error);
     return res.status(400).json({ message: "Something went wrong" }).end();

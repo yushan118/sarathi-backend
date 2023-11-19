@@ -1,6 +1,7 @@
 import express from "express";
 import {
   AuthenticatedAdminRequest,
+  AuthenticatedAmbulanceRequest,
   AuthenticatedRequest,
 } from "../interfaces/request";
 import { BookingModel } from "../db/booking";
@@ -35,11 +36,15 @@ export async function addBooking(
 }
 
 export async function getAllBookings(
-  _req: AuthenticatedAdminRequest,
+  req: express.Request,
   res: express.Response
 ) {
   try {
-    const bookings = await BookingModel.find({}).populate("user");
+    const { status } = req.query;
+
+    const bookings = await BookingModel.find(status && { status }).populate(
+      "user"
+    );
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
@@ -48,7 +53,7 @@ export async function getAllBookings(
 }
 
 export async function getBookingInfo(
-  req: AuthenticatedAdminRequest,
+  req: express.Request,
   res: express.Response
 ) {
   try {
@@ -62,10 +67,7 @@ export async function getBookingInfo(
   }
 }
 
-export async function setStatus(
-  req: AuthenticatedAdminRequest,
-  res: express.Response
-) {
+export async function setStatus(req: express.Request, res: express.Response) {
   try {
     const { id, status } = req.body;
     await BookingModel.findOneAndUpdate(
