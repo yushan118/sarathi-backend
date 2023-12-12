@@ -1,9 +1,5 @@
 import express from "express";
-import {
-  AuthenticatedAdminRequest,
-  AuthenticatedAmbulanceRequest,
-  AuthenticatedRequest,
-} from "../interfaces/request";
+import { AuthenticatedRequest } from "../interfaces/request";
 import { BookingModel } from "../db/booking";
 
 export async function addBooking(
@@ -45,6 +41,38 @@ export async function getAllBookings(
     const bookings = await BookingModel.find(status && { status }).populate(
       "user"
     );
+    return res.status(200).json(bookings).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
+
+export async function getMyBookings(
+  req: AuthenticatedRequest,
+  res: express.Response
+) {
+  try {
+    const bookings = await BookingModel.find({
+      contact_number: req.user.mobile_number,
+    }).populate("user");
+    return res.status(200).json(bookings).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
+
+export async function getBookingsOfPhone(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const { phone } = req.params;
+
+    const bookings = await BookingModel.find({
+      contact_number: phone,
+    }).populate("user");
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
