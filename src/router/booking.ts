@@ -3,6 +3,7 @@ import {
   addBooking,
   getAllBookings,
   getBookingInfo,
+  getBookingsOfPhone,
   getMyBookings,
   setStatus,
 } from "../controllers/bookings";
@@ -14,5 +15,5 @@ export default (router: express.Router) => {
   router.post("/bookings/set-status", setStatus);
   router.get("/bookings/:id", getBookingInfo);
   router.get("/bookings/list/my", isAuthenticated, getMyBookings);
-  router.get("/bookings/list/:phone", isAuthenticated, getMyBookings);
+  router.get("/bookings/list/:phone", isAuthenticated, getBookingsOfPhone);
 };
