@@ -55,7 +55,7 @@ export async function getMyBookings(
   try {
     const bookings = await BookingModel.find({
       contact_number: req.user.mobile_number,
-    }).populate("user");
+    }).populate("user").sort({ createdAt: -1 });
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
@@ -72,7 +72,7 @@ export async function getBookingsOfPhone(
 
     const bookings = await BookingModel.find({
       contact_number: phone,
-    }).populate("user");
+    }).populate("user").sort({ createdAt: -1 });
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
