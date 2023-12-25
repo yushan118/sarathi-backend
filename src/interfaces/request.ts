@@ -1,4 +1,4 @@
-import { IAmbulanceUser } from "db/ambulance-user";
+import { IAmbulanceUser } from "../db/ambulance-user";
 import { IAdminUser } from "../db/admin";
 import { IUser } from "../db/users";
 import express from "express";

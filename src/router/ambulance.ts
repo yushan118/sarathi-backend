@@ -1,11 +1,27 @@
 import express from "express";
-import { isAmbulanceAuthenticated } from "../middlewares";
-import { currentAmbulanceUser } from "../controllers/ambulance";
+import { isAdminAuthenticated, isAmbulanceAuthenticated } from "../middlewares";
+import {
+  currentAmbulanceUser,
+  editAmbulanceDriver,
+  getAllAmbulanceDrivers,
+  removeAmbulanceDriver,
+} from "../controllers/ambulance";
 
 export default (router: express.Router) => {
   router.get(
     "/ambulance/current",
     isAmbulanceAuthenticated,
     currentAmbulanceUser
+  );
+  router.get(
+    "/ambulance/drivers",
+    isAdminAuthenticated,
+    getAllAmbulanceDrivers
+  );
+  router.patch("/ambulance/drivers", isAdminAuthenticated, editAmbulanceDriver);
+  router.delete(
+    "/ambulance/drivers/:id",
+    isAdminAuthenticated,
+    removeAmbulanceDriver
   );
 };
