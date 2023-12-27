@@ -18,6 +18,16 @@ const BookingSchema = new mongoose.Schema(
       ],
       default: "Waiting to be approved by admin",
     },
+    case_sensitivity: {
+      type: "String",
+      enum: ["High", "Medium", "Low", "Unknown"],
+      default: "Unknown",
+    },
+    survival_rate: {
+      type: "String",
+      enum: ["High", "Medium", "Low", "Unknown"],
+      default: "Unknown",
+    },
   },
   { timestamps: true }
 );

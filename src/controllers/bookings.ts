@@ -55,7 +55,9 @@ export async function getMyBookings(
   try {
     const bookings = await BookingModel.find({
       contact_number: req.user.mobile_number,
-    }).populate("user").sort({ createdAt: -1 });
+    })
+      .populate("user")
+      .sort({ createdAt: -1 });
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
@@ -72,7 +74,9 @@ export async function getBookingsOfPhone(
 
     const bookings = await BookingModel.find({
       contact_number: phone,
-    }).populate("user").sort({ createdAt: -1 });
+    })
+      .populate("user")
+      .sort({ createdAt: -1 });
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
@@ -97,11 +101,13 @@ export async function getBookingInfo(
 
 export async function setStatus(req: express.Request, res: express.Response) {
   try {
-    const { id, status } = req.body;
+    const { id, status, case_sensitivity, survival_rate } = req.body;
     await BookingModel.findOneAndUpdate(
       { _id: id },
       {
         status,
+        case_sensitivity,
+        survival_rate,
       }
     );
     return res.status(200).json({ success: true }).end();
