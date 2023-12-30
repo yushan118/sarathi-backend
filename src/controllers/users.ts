@@ -30,6 +30,26 @@ export async function getAllUsers(
   }
 }
 
+export async function editUser(
+  req: AuthenticatedAdminRequest,
+  res: express.Response
+) {
+  try {
+    const { id, name, mobile_number } = req.body;
+    if (!id || !name || !mobile_number) {
+      return res
+        .status(400)
+        .json({ message: "id, name and mobile_number are required fields" })
+        .end();
+    }
+    await UserModel.findOneAndUpdate({ _id: id }, { name, mobile_number });
+    return res.status(200).json({ success: true }).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
+
 export async function removeUser(
   req: AuthenticatedAdminRequest,
   res: express.Response
