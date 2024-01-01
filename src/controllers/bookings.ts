@@ -38,9 +38,9 @@ export async function getAllBookings(
   try {
     const { status } = req.query;
 
-    const bookings = await BookingModel.find(status && { status }).populate(
-      "user"
-    );
+    const bookings = await BookingModel.find(status && { status })
+      .sort({ _id: -1 })
+      .populate("user");
     return res.status(200).json(bookings).end();
   } catch (error) {
     console.log(error);
