@@ -28,6 +28,12 @@ const BookingSchema = new mongoose.Schema(
       enum: ["High", "Medium", "Low", "Unknown"],
       default: "Unknown",
     },
+    timeline: [
+      {
+        status: { type: "String", required: true },
+        at: { type: "Date", required: true, default: Date.now() },
+      },
+    ],
   },
   { timestamps: true }
 );

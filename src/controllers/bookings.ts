@@ -108,6 +108,7 @@ export async function setStatus(req: express.Request, res: express.Response) {
         status,
         case_sensitivity,
         survival_rate,
+        $push: { timeline: { status } },
       }
     );
     return res.status(200).json({ success: true }).end();
