@@ -102,15 +102,15 @@ export async function getBookingInfo(
 export async function setStatus(req: express.Request, res: express.Response) {
   try {
     const { id, status, case_sensitivity, survival_rate } = req.body;
-    await BookingModel.findOneAndUpdate(
-      { _id: id },
-      {
-        status,
-        case_sensitivity,
-        survival_rate,
-        $push: { timeline: { status } },
-      }
-    );
+    let updateBody: any = {
+      status,
+      case_sensitivity,
+      survival_rate,
+    };
+    if (status) {
+      updateBody["$push"] = { timeline: { status } };
+    }
+    await BookingModel.findOneAndUpdate({ _id: id }, updateBody);
     return res.status(200).json({ success: true }).end();
   } catch (error) {
     console.log(error);
