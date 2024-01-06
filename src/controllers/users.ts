@@ -50,16 +50,21 @@ export async function editUser(
   }
 }
 
-export async function removeUser(
+export async function suspendUser(
   req: AuthenticatedAdminRequest,
   res: express.Response
 ) {
   try {
     const { id } = req.params;
-    if (!id) {
-      return res.status(400).json({ message: "id is required fields" }).end();
+    const { action } = req.body;
+    if (!id || !action) {
+      return res
+        .status(400)
+        .json({ message: "id and action required fields" })
+        .end();
     }
-    await UserModel.deleteOne({ _id: id });
+    const toSuspend = action == "suspend";
+    await UserModel.findOneAndUpdate({ _id: id }, { is_suspended: toSuspend });
     return res.status(200).json({ success: true }).end();
   } catch (error) {
     console.log(error);
