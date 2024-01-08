@@ -1,6 +1,7 @@
 import express from "express";
 import { isAdminAuthenticated, isAmbulanceAuthenticated } from "../middlewares";
 import {
+  changeAmbulanceDriverPassword,
   currentAmbulanceUser,
   editAmbulanceDriver,
   getAllAmbulanceDrivers,
@@ -24,4 +25,5 @@ export default (router: express.Router) => {
     isAdminAuthenticated,
     removeAmbulanceDriver
   );
+  router.post("/ambulance/drivers/password", changeAmbulanceDriverPassword);
 };

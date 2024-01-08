@@ -4,6 +4,7 @@ import {
   AuthenticatedAdminRequest,
   AuthenticatedAmbulanceRequest,
 } from "../interfaces/request";
+import { authentication, randomSalt } from "../shared";
 
 export async function currentAmbulanceUser(
   req: AuthenticatedAmbulanceRequest,
@@ -63,6 +64,34 @@ export async function removeAmbulanceDriver(
       return res.status(400).json({ message: "id is required fields" }).end();
     }
     await AmbulanceUserModel.deleteOne({ _id: id });
+    return res.status(200).json({ success: true }).end();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Something went wrong" });
+  }
+}
+
+export async function changeAmbulanceDriverPassword(
+  req: express.Request,
+  res: express.Response
+) {
+  try {
+    const { phone, password } = req.body;
+    if (!phone || !password) {
+      return res
+        .status(400)
+        .json({ message: "phone and password are required fields" })
+        .end();
+    }
+
+    const salt = randomSalt();
+    await AmbulanceUserModel.findOneAndUpdate(
+      { mobile_number: phone },
+      {
+        "authentication.salt": salt,
+        "authentication.password": authentication(salt, password),
+      }
+    );
     return res.status(200).json({ success: true }).end();
   } catch (error) {
     console.log(error);
