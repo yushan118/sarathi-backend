@@ -4,6 +4,7 @@ import {
   getAllUsers,
   editUser,
   suspendUser,
+  userDetails,
 } from "../controllers/users";
 import { isAdminAuthenticated, isAuthenticated } from "../middlewares";
 
@@ -12,4 +13,5 @@ export default (router: express.Router) => {
   router.get("/user/list", isAdminAuthenticated, getAllUsers);
   router.patch("/user/list", isAdminAuthenticated, editUser);
   router.post("/user/:id", isAdminAuthenticated, suspendUser);
+  router.get("/user/details/:mobile_number", userDetails);
 };
