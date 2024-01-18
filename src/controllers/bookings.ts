@@ -101,11 +101,12 @@ export async function getBookingInfo(
 
 export async function setStatus(req: express.Request, res: express.Response) {
   try {
-    const { id, status, case_sensitivity, survival_rate } = req.body;
+    const { id, status, case_sensitivity, survival_rate, hospital } = req.body;
     let updateBody: any = {
       status,
       case_sensitivity,
       survival_rate,
+      hospital,
     };
     if (status) {
       updateBody["$push"] = { timeline: { status } };

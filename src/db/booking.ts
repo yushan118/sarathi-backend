@@ -18,6 +18,7 @@ const BookingSchema = new mongoose.Schema(
       ],
       default: "Waiting to be approved by admin",
     },
+    hospital: { type: "String" },
     case_sensitivity: {
       type: "String",
       enum: ["High", "Medium", "Low", "Unknown"],
