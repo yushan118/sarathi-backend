@@ -1,6 +1,7 @@
 import express from "express";
 import { AuthenticatedRequest } from "../interfaces/request";
 import { BookingModel } from "../db/booking";
+import { io } from "../index";
 
 export async function addBooking(
   req: AuthenticatedRequest,
@@ -111,6 +112,8 @@ export async function setStatus(req: express.Request, res: express.Response) {
     if (status) {
       updateBody["$push"] = { timeline: { status } };
     }
+    io.emit("booking-status-updated", { id });
+
     await BookingModel.findOneAndUpdate({ _id: id }, updateBody);
     return res.status(200).json({ success: true }).end();
   } catch (error) {

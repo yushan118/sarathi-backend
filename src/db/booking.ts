@@ -32,7 +32,7 @@ const BookingSchema = new mongoose.Schema(
     timeline: [
       {
         status: { type: "String", required: true },
-        at: { type: "Date", required: true, default: Date.now() },
+        at: { type: "Date", required: true, default: Date.now },
       },
     ],
   },

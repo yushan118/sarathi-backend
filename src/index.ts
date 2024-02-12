@@ -7,6 +7,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import "dotenv/config";
 import morgan from "morgan";
+import { Server } from "socket.io";
 
 import router from "./router";
 
@@ -24,6 +25,11 @@ app.use(bodyParser.json());
 app.use(morgan("dev"))
 
 const server = http.createServer(app);
+export const io = new Server(server, {
+  cors: {
+    origin: "*",
+  }
+});
 
 const port = process.env.PORT;
 server.listen(port, () => {
