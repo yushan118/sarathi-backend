@@ -1,11 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
+// Define the interface for AmbulanceUser document in MongoDB
 export interface IAmbulanceUser {
   _id: Schema.Types.ObjectId;
   name: string;
   mobile_number: string;
 }
 
+// Define the interface for authentication-related fields
 interface IAmbulanceUserAuthentication {
   authentication: {
     password: string;
@@ -14,6 +16,7 @@ interface IAmbulanceUserAuthentication {
   };
 }
 
+// Create a Mongoose schema for AmbulanceUser incorporating both interfaces
 const AmbulanceUserSchema = new mongoose.Schema<
   IAmbulanceUser & IAmbulanceUserAuthentication
 >({
@@ -26,6 +29,7 @@ const AmbulanceUserSchema = new mongoose.Schema<
   },
 });
 
+// Create a Mongoose model for AmbulanceUser based on the schema
 export const AmbulanceUserModel = mongoose.model(
   "AmbulanceUser",
   AmbulanceUserSchema

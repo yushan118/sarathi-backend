@@ -4,6 +4,7 @@ import express from "express";
 import { AdminUserModel } from "../db/admin";
 import { AmbulanceUserModel } from "../db/ambulance-user";
 
+// User-related functions
 export async function login(req: express.Request, res: express.Response) {
   try {
     const { mobile_number, password } = req.body;
@@ -90,6 +91,7 @@ export async function register(req: express.Request, res: express.Response) {
   }
 }
 
+// Admin-related functions
 export async function loginAdmin(req: express.Request, res: express.Response) {
   try {
     const { email, password } = req.body;
@@ -178,6 +180,7 @@ export async function registerAdmin(
   }
 }
 
+// Ambulance user-related functions
 export async function loginAmbulance(
   req: express.Request,
   res: express.Response

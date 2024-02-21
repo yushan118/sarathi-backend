@@ -8,6 +8,14 @@ import {
 import { AdminUserModel } from "../db/admin";
 import { AmbulanceUserModel } from "../db/ambulance-user";
 
+
+/**
+ * Middleware to check if a normal user is authenticated.
+ * @param req - Express request object with user data attached after authentication.
+ * @param res - Express response object.
+ * @param next - Express next function.
+ */
+
 export async function isAuthenticated(
   req: AuthenticatedRequest,
   res: express.Response,
@@ -28,6 +36,7 @@ export async function isAuthenticated(
         .json({ message: "No user exists given the token" });
     }
 
+  // Attach the authenticated user information to the request object.
     req.user = existingUser;
     next();
   } catch (error) {
@@ -35,6 +44,14 @@ export async function isAuthenticated(
     return res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+
+/**
+ * Middleware to check if an admin user is authenticated.
+ * @param req - Express request object with admin user data attached after authentication.
+ * @param res - Express response object.
+ * @param next - Express next function.
+ */
 
 export async function isAdminAuthenticated(
   req: AuthenticatedAdminRequest,
@@ -56,6 +73,7 @@ export async function isAdminAuthenticated(
         .json({ message: "No user exists given the token" });
     }
 
+    // Attach the authenticated admin user information to the request object.
     req.admin = existingAdminUser;
     next();
   } catch (error) {
@@ -63,6 +81,13 @@ export async function isAdminAuthenticated(
     return res.status(400).json({ message: "Something went wrong" });
   }
 }
+
+/**
+ * Middleware to check if an ambulance user is authenticated.
+ * @param req - Express request object with ambulance user data attached after authentication.
+ * @param res - Express response object.
+ * @param next - Express next function.
+ */
 
 export async function isAmbulanceAuthenticated(
   req: AuthenticatedAmbulanceRequest,
@@ -84,6 +109,7 @@ export async function isAmbulanceAuthenticated(
         .json({ message: "No user exists given the token" });
     }
 
+    // Attach the authenticated ambulance user information to the request object.
     req.ambulance_user = existingAmbulanceUser;
     next();
   } catch (error) {

@@ -3,6 +3,7 @@ import { AuthenticatedRequest } from "../interfaces/request";
 import { BookingModel } from "../db/booking";
 import { io } from "../index";
 
+// Controller function to add a new booking
 export async function addBooking(
   req: AuthenticatedRequest,
   res: express.Response
@@ -32,6 +33,7 @@ export async function addBooking(
   }
 }
 
+// Controller function to get all bookings with optional status filter
 export async function getAllBookings(
   req: express.Request,
   res: express.Response
@@ -49,6 +51,7 @@ export async function getAllBookings(
   }
 }
 
+// Controller function to get bookings for the authenticated user
 export async function getMyBookings(
   req: AuthenticatedRequest,
   res: express.Response
@@ -66,6 +69,7 @@ export async function getMyBookings(
   }
 }
 
+// Controller function to get bookings for a specific phone number
 export async function getBookingsOfPhone(
   req: express.Request,
   res: express.Response
@@ -85,6 +89,7 @@ export async function getBookingsOfPhone(
   }
 }
 
+// Controller function to get details of a specific booking by its ID
 export async function getBookingInfo(
   req: express.Request,
   res: express.Response
@@ -100,6 +105,7 @@ export async function getBookingInfo(
   }
 }
 
+// Controller function to update the status and other details of a booking
 export async function setStatus(req: express.Request, res: express.Response) {
   try {
     const { id, status, case_sensitivity, survival_rate, hospital } = req.body;

@@ -1,11 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
+// Define the interface for AdminUser document in MongoDB
 export interface IAdminUser {
   _id: Schema.Types.ObjectId;
   name: string;
   email: string;
 }
 
+// Define the interface for authentication-related fields
 interface IAdminUserAuthentication {
   authentication: {
     password: string;
@@ -14,6 +16,7 @@ interface IAdminUserAuthentication {
   };
 }
 
+// Create a Mongoose schema for AdminUser incorporating both interfaces
 const AdminUserSchema = new mongoose.Schema<
   IAdminUser & IAdminUserAuthentication
 >({
@@ -26,4 +29,5 @@ const AdminUserSchema = new mongoose.Schema<
   },
 });
 
+// Create a Mongoose model for AdminUser based on the schema
 export const AdminUserModel = mongoose.model("AdminUser", AdminUserSchema);

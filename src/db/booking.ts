@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
+// Define the Mongoose schema for the Booking document
 const BookingSchema = new mongoose.Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -36,7 +37,8 @@ const BookingSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true }    // Include timestamps for createdAt and updatedAt
 );
 
+// Create a Mongoose model for Booking based on the schema
 export const BookingModel = mongoose.model("Bookings", BookingSchema);
